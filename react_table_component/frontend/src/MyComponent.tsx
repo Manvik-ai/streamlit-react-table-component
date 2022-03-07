@@ -11,44 +11,6 @@ interface State {
   isFocused: boolean
 }
 
-const columns = [
-    {
-      Header: 'Name',
-      columns: [
-        {
-          Header: 'First Name',
-          accessor: 'firstName',
-        },
-        {
-          Header: 'Last Name',
-          accessor: 'lastName',
-        },
-      ],
-    },
-    {
-      Header: 'Info',
-      columns: [
-        {
-          Header: 'Age',
-          accessor: 'age',
-        },
-        {
-          Header: 'Visits',
-          accessor: 'visits',
-        },
-        {
-          Header: 'Status',
-          accessor: 'status',
-        },
-        {
-          Header: 'Profile Progress',
-          accessor: 'progress',
-        },
-      ],
-    },
-  ]
-
-
 /**
  * This is a React-based component template. The `render()` function is called
  * automatically when your component should be re-rendered.
@@ -80,6 +42,7 @@ class MyComponent extends StreamlitComponentBase<State> {
     }
 
     const data = this.props.args["data"]
+    const columns = this.props.args["columns"]
 
     // Show a button and some text.
     // When the button is clicked, we'll increment our "numClicks" state

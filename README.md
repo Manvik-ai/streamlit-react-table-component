@@ -4,13 +4,13 @@
 
 Following the setup recommended by the `streamlit-component-template` project,
 
-* Development Setup for Python using virtualenv:
+* Development Setup for Python 3 using virtualenv:
 
   ```sh
   venv .venv
   source .venv/bin/activate
-  pip install -e .
-  streamlit run react_table_component/__init__.py
+  pip install -e .[test]
+  streamlit run react_table_component/test_component.py
   ```
 
 * Development Setup for the Javascript frontend:
@@ -18,6 +18,7 @@ Following the setup recommended by the `streamlit-component-template` project,
   Open a new terminal and run these commands:
   
   ```sh
+  cd react_table_component/frontend
   yarn run start
   ```
   

@@ -1,4 +1,6 @@
 import os
+from typing import List, Union
+from dataclasses import dataclass, asdict
 import streamlit.components.v1 as components
 import pandas as pd
 
@@ -39,12 +41,92 @@ else:
     _component_func = components.declare_component("react_table_component", path=build_dir)
 
 
+# @dataclass
+# class Column:
+#     """
+#     Attributes
+#     ----------
+#     name: str
+#         The name of the thing we're saying hello to. The component will display
+#     df: pandas.DataFrame
+#         The dataframe to display
+#     columns: 
+#         The format to display the columsn
+#     key: str or None
+#         An optional key that uniquely identifies this component. If this is
+#     """
+
+#     header: str
+#     accessor: str
+#     columns: 'Columns'
+
+#     def to_js_column(self):
+#         def rename_field(f):
+#             return (f if f not in self.fields_to_rename 
+#                 else self.fields_to_rename[f])
+#         def transform_field_value(f, v):
+            
+#         return {
+#             rename_field(x): 
+#         }
+
+# @dataclass
+# class Columns:
+#     list_: List[Union[Column, 'Columns']]
+    
+#     def __init__(self):
+#         self.list_ = []
+
+#     @staticmethod
+#     def item_convert_to_js(item):
+#         m = {
+#             Column: lambda x: x.to_js_column(),
+#             Columns: lambda x: x.to_js_columns()
+#         }
+#         return m.get(type(item))(item)
+
+#     def add_column(self, header, columns):
+#         c = Column(header=header, columns=columns)
+#         self.list_.append(c)
+#         return self
+
+#     def to_js_columns(self):
+#         return map(Columns.item_convert_to_js, self.list_)
+# 
+# def make_columns_():
+#     return Columns().add_column(
+#         header='Name', 
+#         columns=Columns().add_column(
+#             header='First Name',
+#             accessor='firstName'
+#         ).add_column(
+#             header='Last Name',
+#             accessor='lastName'
+#         )
+#     ).add_column(
+#         header='Info',
+#         columns=Columns().add_column(
+#             header='Age',
+#             accessor='age'
+#         ).add_column(
+#             header='Visits',
+#             accessor='visits'
+#         ).add_column(
+#             header='Status',
+#             accessor='status'
+#         ).add_column(
+#             header='Profile Progress',
+#             accessor='progress'
+#         )
+#     )
+
+
 # Create a wrapper function for the component. This is an optional
 # best practice - we could simply expose the component function returned by
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def react_table_component(name, df, key=None):
+def react_table_component(name, df, columns, key=None):
     """Create a new instance of "react_table_component".
 
     Parameters
@@ -52,6 +134,10 @@ def react_table_component(name, df, key=None):
     name: str
         The name of the thing we're saying hello to. The component will display
         the text "Hello, {name}!"
+    df: pandas.DataFrame
+        The dataframe to display
+    columns: 
+        The format to display the columsn
     key: str or None
         An optional key that uniquely identifies this component. If this is
         None, and the component's arguments are changed, the component will
@@ -73,51 +159,8 @@ def react_table_component(name, df, key=None):
     #
     # "default" is a special argument that specifies the initial return
     # value of the component before the user has interacted with it.
-    component_value = _component_func(name=name, data=data, key=key, default=0)
+    component_value = _component_func(name=name, data=data, columns=columns, key=key, default=0)
 
     # We could modify the value returned from the component if we wanted.
     # There's no need to do this in our simple example - but it's an option.
     return component_value
-
-def make_df():
-    d = {}
-    d['firstName'] = "Barack"
-    d['lastName'] = "Obama"
-    d['age'] = 54
-    d['visits'] = 55
-    d['progress'] = 34
-    d['status'] = 'married'
-    
-    return pd.DataFrame([d]*10)
-
-df = make_df()
-
-
-# Add some test code to play with the component while it's in development.
-# During development, we can run this just as we would any other Streamlit
-# app: `$ streamlit run react_table_component/__init__.py`
-if True:
-# if not _RELEASE:
-    import streamlit as st
-
-    st.subheader("Component with constant args")
-
-    # Create an instance of our component with a constant `name` arg, and
-    # print its output value.
-    num_clicks = react_table_component("World", df=df)
-    st.markdown("You've clicked %s times!" % int(num_clicks))
-
-    st.markdown("---")
-    st.subheader("Component with variable args")
-
-    # Create a second instance of our component whose `name` arg will vary
-    # based on a text_input widget.
-    #
-    # We use the special "key" argument to assign a fixed identity to this
-    # component instance. By default, when a component's arguments change,
-    # it is considered a new instance and will be re-mounted on the frontend
-    # and lose its current state. In this case, we want to vary the component's
-    # "name" argument without having it get recreated.
-    name_input = st.text_input("Enter a name", value="Streamlit")
-    num_clicks = react_table_component(name_input, key="foo", df=df)
-    st.markdown("You've clicked %s times!" % int(num_clicks))

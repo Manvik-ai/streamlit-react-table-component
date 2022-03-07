@@ -19,4 +19,7 @@ setuptools.setup(
         # them here.
         "streamlit >= 0.63",
     ],
+    extras_require = {
+        'test': ['names',]
+    }
 )
