@@ -1,20 +1,13 @@
 import streamlit as st
 import pandas as pd
-from react_table_component import react_table_component
+from react_table_component import react_table
 import names
 import random
 
 
-def _run_component(df, columns):
+def _run_component(df, columns, key=None):
     st.subheader("Component with variable args")
-    # We use the special "key" argument to assign a fixed identity to this
-    # component instance. By default, when a component's arguments change,
-    # it is considered a new instance and will be re-mounted on the frontend
-    # and lose its current state. In this case, we want to vary the component's
-    # "name" argument without having it get recreated.
-    name_input = st.text_input("Enter a name", value="Streamlit")
-    num_clicks = react_table_component(
-        name_input, df=df, columns=columns, key="foo")
+    num_clicks = react_table(df=df, columns=columns, key=key)
     st.markdown("You've clicked %s times!" % int(num_clicks))
 
 
@@ -83,6 +76,14 @@ def make_df(n):
 def run_component_1():
     columns=make_columns_easy()
     df = make_df(20)
-    _run_component(df, columns)
+    _run_component(df, columns, key="component_1")
 
-run_component_1()
+
+# columns = [{'Header': '_comment', 'accessor': '_comment'}, {'Header': 'year', 'accessor': 'year'}, {'Header': 'fertility', 'accessor': 'fertility'}, {'Header': 'life_expect', 'accessor': 'life_expect'}, {'Header': 'n_fertility', 'accessor': 'n_fertility'}, {'Header': 'n_life_expect', 'accessor': 'n_life_expect'}, {'Header': 'country', 'accessor': 'country'}, {'Header': 'p_fertility', 'accessor': 'p_fertility'}, {'Header': 'p_life_expect', 'accessor': 'p_life_expect'}]
+
+def run_component_0():
+    df = pd.read_json("https://raw.githubusercontent.com/vega/vega-datasets/next/data/countries.json")
+    react_table(df.head(10), key="countries")
+
+
+run_component_0()

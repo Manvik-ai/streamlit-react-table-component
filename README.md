@@ -1,8 +1,42 @@
 # README
 
-## Development Setup
+Display your Pandas Dataframe via Streamlit using this component. 
+It is based on React-Table (https://react-table.tanstack.com/) Javascript UI library.
 
-Following the setup recommended by the `streamlit-component-template` project,
+---
+
+**Note**: This component is new and not yet ready for production use.
+
+---
+
+Tags: #pandas-dataframe, #react-table, #streamlit, #streamlit-components
+
+## For Users
+
+Read this section before using the component.
+
+### Getting Started
+
+```py
+import streamlit as st
+import pandas as pd
+from react_table_component import react_table
+
+@st.cache
+def load_example_dataset():
+    df0 = pd.read_json("https://raw.githubusercontent.com/vega/vega-datasets/next/data/cars.json")
+    # Return first ten rows of the dataset
+    return df0.head(10)
+
+df = load_example_dataset()
+react_table(df)
+```
+
+## For Developers
+
+Read this section if you want to know how the extension works or modify the source code.
+
+Following the setup recommended by the [`streamlit-component-template` project](https://github.com/streamlit/component-template) (do read it first),
 
 * Development Setup for Python 3 using virtualenv:
 
